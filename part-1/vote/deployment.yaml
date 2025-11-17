@@ -1,0 +1,56 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: vote
+  namespace: voting-app
+  labels:
+    app: vote
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: vote
+  template:
+    metadata:
+      labels:
+        app: vote
+    spec:
+      containers:
+        - name: vote
+          image: dockersamples/examplevotingapp_vote:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: OPTION_A
+              valueFrom:
+                configMapKeyRef:
+                  name: vote-config
+                  key: OPTION_A
+            - name: OPTION_B
+              valueFrom:
+                configMapKeyRef:
+                  name: vote-config
+                  key: OPTION_B
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: vote-config
+                  key: REDIS_HOST
+            - name: REDIS_PORT
+              value: "6379"
+          
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          
+          readinessProbe:
+              httpGet:
+                path: /
+                port: 80
+              initialDelaySeconds: 3
+              periodSeconds: 3
+
+              

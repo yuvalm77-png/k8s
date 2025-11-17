@@ -1,0 +1,29 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: vote-config
+  namespace: voting-app
+data:
+  OPTION_A: "Cats"
+  OPTION_B: "Dogs"
+  REDIS_HOST: "redis"
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: worker-config
+  namespace: voting-app
+data:
+  REDIS_HOST: "redis"
+  POSTGRES_HOST: "db"
+
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: result-config
+  namespace: voting-app
+data:
+  POSTGRES_HOST: "db"

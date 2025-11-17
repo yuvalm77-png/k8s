@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: result
+  namespace: voting-app
+spec:
+  selector:
+    app: result
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 31001
+  type: NodePort
